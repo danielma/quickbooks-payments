@@ -1,4 +1,8 @@
+require 'spec_helper'
+
 RSpec.describe Quickbooks::Payments::Charge do
+  include_context 'setup access_token'
+
   describe 'class methods' do
     describe '.create' do
       let(:options)  { {} }
@@ -6,6 +10,11 @@ RSpec.describe Quickbooks::Payments::Charge do
 
       it 'returns a charge object' do
         expect(call).to be_a described_class
+      end
+
+      it 'makes a request' do
+        expect(Quickbooks::Payments::Request).to receive(:post)
+        call
       end
     end
   end

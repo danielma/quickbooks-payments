@@ -1,15 +1,10 @@
 require 'spec_helper'
 
 RSpec.describe Quickbooks::Payments::Request do
+  include_context 'setup access_token'
+
   describe 'class methods' do
     let(:args)  { ['/path'] }
-    let(:token) do
-      token = instance_double OAuth::AccessToken
-      %w(get post put delete head).each do |meth|
-        allow(token).to receive(meth).and_return true
-      end
-      token
-    end
 
     %w(get post put delete head).each do |meth|
       describe meth do
@@ -21,7 +16,7 @@ RSpec.describe Quickbooks::Payments::Request do
         end
 
         it 'sends args to access_token' do
-          Quickbooks::Payments.access_token = token
+          Quickbooks::Payments.access_token = access_token
           expect(Quickbooks::Payments.access_token).to receive(meth).with(*args)
           call
         end
