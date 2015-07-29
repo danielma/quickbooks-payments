@@ -29,9 +29,11 @@ RSpec.describe Quickbooks::Payments do
       access_token_path:  '/oauth/v1/get_access_token'
   end
 
-  it 'OAuth' do
-    access_token = OAuth::AccessToken.new(op_consumer, credentials['TOKEN'], credentials['SECRET'])
-    ap access_token
-    ap access_token.get('/quickbooks/v4/customers/1/cards')
+  it 'is authorized' do
+    access_token = OAuth::AccessToken.new(op_consumer,
+                                          credentials['TOKEN'],
+                                          credentials['SECRET'])
+    expect { access_token.get('/quickbooks/v4/customers/1/cards').value }
+      .to_not raise_error
   end
 end

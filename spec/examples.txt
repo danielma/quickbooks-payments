@@ -1,3 +1,5 @@
-example_id                           | status | run_time     |
------------------------------------- | ------ | ------------ |
-./spec/acceptance/oauth_spec.rb[1:1] | passed | 2.16 seconds |
+example_id                                         | status | run_time        |
+-------------------------------------------------- | ------ | --------------- |
+./spec/acceptance/oauth_spec.rb[1:1]               | passed | 1.08 seconds    |
+./spec/quickbooks-payments/charge_spec.rb[1:1:1:1] | passed | 0.00098 seconds |
+./spec/quickbooks-payments_spec.rb[1:1]            | passed | 0.00044 seconds |
