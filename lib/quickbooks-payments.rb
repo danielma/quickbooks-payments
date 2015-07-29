@@ -1,5 +1,8 @@
 require 'oauth'
+
+require 'quickbooks-payments/errors'
 require 'quickbooks-payments/charge'
+require 'quickbooks-payments/request'
 
 module Quickbooks
   module Payments
