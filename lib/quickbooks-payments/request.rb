@@ -1,20 +1,36 @@
 module Quickbooks::Payments
   class Request
     class << self
-      %w(get post put delete head).each do |meth|
-        define_method meth do |*args|
-          request meth, *args
+      %w(get delete head).each do |meth|
+        define_method meth do |endpoint, headers = {}|
+          request meth, endpoint, headers
+        end
+      end
+
+      %w(post put).each do |body_meth|
+        define_method body_meth do |endpoint, body = '', headers = {}|
+          request_with_body body_meth, endpoint, body, headers
         end
       end
 
       private
 
-      def request method, *args
-        access_token = Quickbooks::Payments.access_token
+      def ensure_access_token method
+        @access_token = Quickbooks::Payments.access_token
 
-        raise NoAccessTokenError unless access_token.respond_to?(method)
+        raise NoAccessTokenError unless @access_token.respond_to?(method)
+      end
 
-        Quickbooks::Payments.access_token.public_send(method, *args)
+      def request method, endpoint, headers = {}
+        ensure_access_token method
+
+        @access_token.public_send method, endpoint, headers
+      end
+
+      def request_with_body method, endpoint, body = '', headers = {}
+        ensure_access_token method
+
+        @access_token.public_send method, endpoint, body, headers
       end
     end
   end
