@@ -24,13 +24,20 @@ module Quickbooks::Payments
       def request method, endpoint, headers = {}
         ensure_access_token method
 
-        @access_token.public_send method, endpoint, headers
+        @access_token.public_send method, endpoint, default_headers.merge(headers)
       end
 
       def request_with_body method, endpoint, body = '', headers = {}
         ensure_access_token method
 
-        @access_token.public_send method, endpoint, body, headers
+        @access_token.public_send method, endpoint, body, default_headers.merge(headers)
+      end
+
+      def default_headers
+        {
+          'Content-Type' => 'application/json',
+          'Accept' => 'application/json'
+        }
       end
     end
   end
