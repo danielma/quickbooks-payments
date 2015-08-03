@@ -64,7 +64,4 @@ RSpec.describe Quickbooks::Payments::Charge do
       end
     end
   end
-
-  describe 'instance methods' do
-  end
 end
