@@ -50,6 +50,18 @@ RSpec.describe Quickbooks::Payments::Charge do
           end
         end
       end
+
+      describe 'allowed_options' do
+        it 'allows recognized options' do
+          expect { described_class.create default_options }
+            .to_not raise_error
+        end
+
+        it 'does not allow unrecognized options' do
+          expect { described_class.create default_options.merge(__not_an_option__: 'yeah!') }
+            .to raise_error(ArgumentError)
+        end
+      end
     end
   end
 
