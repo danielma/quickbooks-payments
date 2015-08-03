@@ -13,10 +13,14 @@ RSpec.describe Quickbooks::Payments::BasicModel do
       let(:options) { { "_fakekey" => :val } }
       subject(:call) { described_class.new options }
 
-      it 'sets each key value pair' do
-        expect_any_instance_of(described_class).to receive("_fakekey=").with(:val)
-        call
+      it 'sets json to incoming hash' do
+        expect(call.json).to eq options
       end
     end
+  end
+
+  describe 'instance methods' do
+    let(:options) { { "token" => "abcdef" } }
+    subject(:instance) { described_class.new options }
   end
 end

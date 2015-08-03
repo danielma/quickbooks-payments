@@ -1,9 +1,9 @@
 module Quickbooks::Payments
   class BasicModel
-    def initialize attrs = {}
-      attrs.to_h.each do |k, v|
-        send "#{k}=", v
-      end
+    attr_accessor :json
+
+    def initialize json = {}
+      self.json = json
     end
   end
 end
