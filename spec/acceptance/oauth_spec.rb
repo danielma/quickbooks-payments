@@ -10,8 +10,8 @@ credentials_txt.split.each do |line|
 end
 
 RSpec.describe Quickbooks::Payments do
-  let(:consumer_key)    { '***REMOVED***' }
-  let(:consumer_secret) { '***REMOVED***' }
+  let(:consumer_key)    { credentials['CONSUMER_KEY'] }
+  let(:consumer_secret) { credentials['CONSUMER_SECRET'] }
 
   let(:consumer) do
     OAuth::Consumer.new consumer_key, consumer_secret,

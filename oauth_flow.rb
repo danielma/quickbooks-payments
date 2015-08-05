@@ -1,8 +1,17 @@
 require 'oauth'
 require 'awesome_print'
 
-consumer_key    = '***REMOVED***'
-consumer_secret = '***REMOVED***'
+credentials_txt = File.read('./CREDENTIALS')
+
+credentials = {}
+
+credentials_txt.split.each do |line|
+  key, value = line.split('=')
+  credentials[key] = value
+end
+
+consumer_key    = credentials['CONSUMER_KEY']
+consumer_secret = credentials['CONSUMER_SECRET']
 
 consumer = OAuth::Consumer.new consumer_key, consumer_secret,
   site:               'https://oauth.intuit.com',
