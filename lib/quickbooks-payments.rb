@@ -1,5 +1,7 @@
 require 'oauth'
 
+module Quickbooks; end
+
 require 'quickbooks-payments/utils'
 require 'quickbooks-payments/errors'
 require 'quickbooks-payments/basic_model'
