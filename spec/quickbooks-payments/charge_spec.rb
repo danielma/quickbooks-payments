@@ -21,8 +21,32 @@ RSpec.describe Quickbooks::Payments::Charge do
       end
 
       it 'makes a request' do
-        expect(Quickbooks::Payments::Request).to receive(:post)
+        expect(Quickbooks::Payments::Request).to receive(:post).and_return({})
         call
+      end
+
+      describe 'attributes' do
+        let(:created) { '2014-11-03T16:41:42Z' }
+
+        before do
+          allow(access_token).to receive(:post).and_return(
+            created: created,
+            status: 'CAPTURED',
+            amount: '10.55',
+            currency: 'USD',
+            token: 'bFy3h7W3D2tmOfYxl2msnLbUirY=',
+            id: 'EMU254189574',
+            authCode: '792668'
+          )
+        end
+
+        its(:created_at) { is_expected.to eq Time.parse(created) }
+        its(:status) { is_expected.to eq described_class::Statuses::CAPTURED }
+        its(:amount) { is_expected.to eq '10.55' }
+        its(:currency) { is_expected.to eq 'USD' }
+        its(:token) { is_expected.to eq 'bFy3h7W3D2tmOfYxl2msnLbUirY=' }
+        its(:id) { 'EMU254189574' }
+        its(:auth_code) { is_expected.to eq '792668' }
       end
 
       describe 'requires' do
@@ -58,8 +82,10 @@ RSpec.describe Quickbooks::Payments::Charge do
         end
 
         it 'does not allow unrecognized options' do
-          expect { described_class.create default_options.merge(__not_an_option__: 'yeah!') }
-            .to raise_error(ArgumentError)
+          expect do
+            described_class
+              .create default_options.merge(__not_an_option__: 'yeah!')
+          end.to raise_error(ArgumentError)
         end
       end
     end
