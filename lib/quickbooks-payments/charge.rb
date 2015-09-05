@@ -1,44 +1,84 @@
-module Quickbooks::Payments
-  class Charge < BasicModel
-    @@root_url = '/quickbooks/v4/payments/charges'
+module Quickbooks
+  module Payments
+    # Represents a charge
+    #
+    # Create a charge by using `Charge.create()`
+    class Charge < BasicModel
+      @root_url = '/quickbooks/v4/payments/charges'
 
-    class << self
-      def create options = {}
-        options = validate_options options
+      attr_accessor :status, :amount, :currency, :token, :id, :auth_code
+      attr_reader :created_at
 
-        response = Quickbooks::Payments::Request.post @@root_url, options
+      alias_method :authCode=, :auth_code=
 
-        Charge.new response
+      # Statuses
+      class Statuses
+        AUTHORIZED = 'AUTHORIZED'
+        CAPTURED = 'CAPTURED'
+        DECLINED = 'DECLINED'
+        CANCELLED = 'CANCELLED'
+        SETTLED = 'SETTLED'
+        REFUNEDED = 'REFUNDED'
       end
 
-      private
+      class << self
+        def create(options = {})
+          options = validate_options options
 
-      def validate_options options = {}
-        options = options.symbolize_keys
+          response = Quickbooks::Payments::Request.post @root_url, options
 
-        ensure_required_options options
-        verify_allowed_options options
+          new response
+        end
 
-        options
-      end
+        private
 
-      def ensure_required_options options
-        raise NoTokenError if options[:token].nil?
-        raise NoCurrencyError if options[:currency].nil?
-        raise NoAmountError if options[:amount].nil?
-      end
+        def validate_options(options = {})
+          options = options.symbolize_keys
 
-      def allowed_options
-        @allowed_options ||= %w(token amount currency cardOnFile card context capture description)
-          .map { |v| [v.to_sym, true ] }
-          .to_h
-      end
+          ensure_required_options options
+          verify_allowed_options options
 
-      def verify_allowed_options options
-        options.keys.each do |k|
-          allowed_options[k] || raise(ArgumentError.new, "Unsupported option #{k}")
+          options
+        end
+
+        def ensure_required_options(options)
+          fail NoTokenError if options[:token].nil?
+          fail NoCurrencyError if options[:currency].nil?
+          fail NoAmountError if options[:amount].nil?
+        end
+
+        def allowed_options
+          @allowed_options ||= %w(token amount currency cardOnFile card context
+                                  capture description)
+                               .map { |v| [v.to_sym, true] }
+                               .to_h
+        end
+
+        def verify_allowed_options(options)
+          options.keys.each do |k|
+            allowed_options.key?(k) ||
+              fail(ArgumentError.new, "Unsupported option #{k}")
+          end
         end
       end
+
+      def initialize(json = {})
+        json.each do |key, value|
+          send "#{key}=", value
+        end
+      end
+
+      # Setters
+
+      def created_at=(string_or_time)
+        @created_at = if string_or_time.is_a?(Time)
+                        string_or_time
+                      else
+                        Time.parse(string_or_time)
+                      end
+      end
+
+      alias_method :created=, :created_at=
     end
   end
 end
