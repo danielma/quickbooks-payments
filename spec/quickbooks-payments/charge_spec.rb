@@ -36,7 +36,8 @@ RSpec.describe Quickbooks::Payments::Charge do
             currency: 'USD',
             token: 'bFy3h7W3D2tmOfYxl2msnLbUirY=',
             id: 'EMU254189574',
-            authCode: '792668'
+            authCode: '792668',
+            capture: true
           )
         end
 
@@ -47,6 +48,7 @@ RSpec.describe Quickbooks::Payments::Charge do
         its(:token) { is_expected.to eq 'bFy3h7W3D2tmOfYxl2msnLbUirY=' }
         its(:id) { 'EMU254189574' }
         its(:auth_code) { is_expected.to eq '792668' }
+        its(:json) { is_expected.to have_key :created }
       end
 
       describe 'requires' do
