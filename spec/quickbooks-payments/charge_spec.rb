@@ -36,7 +36,8 @@ RSpec.describe Quickbooks::Payments::Charge do
             currency: 'USD',
             token: 'bFy3h7W3D2tmOfYxl2msnLbUirY=',
             id: 'EMU254189574',
-            authCode: '792668'
+            authCode: '792668',
+            capture: true
           )
         end
 
