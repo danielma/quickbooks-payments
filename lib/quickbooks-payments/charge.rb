@@ -63,6 +63,8 @@ module Quickbooks
       end
 
       def initialize(json = {})
+        super
+
         json.each do |key, value|
           setter = "#{key}="
           send(setter, value) if respond_to?(setter)
