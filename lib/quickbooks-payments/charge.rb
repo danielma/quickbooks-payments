@@ -35,8 +35,6 @@ module Quickbooks
             options,
             'Request-Id' => request_id)
 
-          ap response
-
           new response.merge request_id: request_id
         end
 
