@@ -35,8 +35,6 @@ module Quickbooks
             options,
             'Request-Id' => request_id)
 
-          ap response
-
           new response.merge request_id: request_id
         end
 
@@ -69,15 +67,6 @@ module Quickbooks
             allowed_options.key?(k) ||
               fail(ArgumentError.new, "Unsupported option #{k}")
           end
-        end
-      end
-
-      def initialize(json = {})
-        super
-
-        json.each do |key, value|
-          setter = "#{key}="
-          send(setter, value) if respond_to?(setter)
         end
       end
 

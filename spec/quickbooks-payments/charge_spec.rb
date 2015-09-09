@@ -3,6 +3,19 @@ require 'spec_helper'
 RSpec.describe Quickbooks::Payments::Charge do
   include_context 'setup access_token'
 
+  let(:valid_attributes) do
+    {
+      created: '2014-11-03T16:41:42Z',
+      status: 'CAPTURED',
+      amount: '10.55',
+      currency: 'USD',
+      token: 'bFy3h7W3D2tmOfYxl2msnLbUirY=',
+      id: 'EMU254189574',
+      authCode: '792668',
+      capture: true
+    }
+  end
+
   describe 'class methods' do
     describe '.create' do
       let(:default_options) do
@@ -28,24 +41,15 @@ RSpec.describe Quickbooks::Payments::Charge do
       end
 
       describe 'attributes' do
-        let(:created) { '2014-11-03T16:41:42Z' }
-
         before do
           resp = instance_double Net::HTTPOK
-          allow(resp).to receive(:body).and_return({
-            created: created,
-            status: 'CAPTURED',
-            amount: '10.55',
-            currency: 'USD',
-            token: 'bFy3h7W3D2tmOfYxl2msnLbUirY=',
-            id: 'EMU254189574',
-            authCode: '792668',
-            capture: true
-          }.to_json)
+          allow(resp).to receive(:body).and_return(valid_attributes.to_json)
           allow(access_token).to receive(:post).and_return(resp)
         end
 
-        its(:created_at) { is_expected.to eq Time.parse(created) }
+        its(:created_at) do
+          is_expected.to eq Time.parse valid_attributes[:created]
+        end
         its(:status) { is_expected.to eq described_class::Statuses::CAPTURED }
         its(:amount) { is_expected.to eq '10.55' }
         its(:currency) { is_expected.to eq 'USD' }

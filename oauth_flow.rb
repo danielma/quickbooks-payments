@@ -1,3 +1,5 @@
+# rubocop:disable all
+
 require 'oauth'
 require 'awesome_print'
 
@@ -31,4 +33,3 @@ ap 'token'
 ap at.token
 ap 'secret'
 ap at.secret
-

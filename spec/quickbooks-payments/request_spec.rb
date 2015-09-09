@@ -7,6 +7,10 @@ RSpec.describe Quickbooks::Payments::Request do
     let(:args)  { ['/path'] }
     let(:default_headers) { described_class.send :default_headers }
 
+    def get_url(path)
+      described_class.send :get_url, path
+    end
+
     %w(get delete head).each do |meth|
       describe meth do
         let(:call) { described_class.send meth, *args }
@@ -19,7 +23,7 @@ RSpec.describe Quickbooks::Payments::Request do
         it 'sends args to access_token' do
           Quickbooks::Payments.access_token = access_token
           expect(Quickbooks::Payments.access_token).to receive(meth)
-            .with(args[0], default_headers)
+            .with(get_url(args[0]), default_headers)
           call
         end
       end
@@ -37,7 +41,7 @@ RSpec.describe Quickbooks::Payments::Request do
         it 'sends args to access_token' do
           Quickbooks::Payments.access_token = access_token
           expect(Quickbooks::Payments.access_token).to receive(meth)
-            .with(args[0], '', default_headers)
+            .with(get_url(args[0]), '', default_headers)
           call
         end
       end
