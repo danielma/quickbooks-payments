@@ -15,18 +15,18 @@ RSpec.describe Quickbooks::Payments do
 
   let(:consumer) do
     OAuth::Consumer.new consumer_key, consumer_secret,
-      site:               'https://oauth.intuit.com',
-      request_token_path: '/oauth/v1/get_request_token',
-      authorize_url:      'https://appcenter.intuit.com/Connect/Begin',
-      access_token_path:  '/oauth/v1/get_access_token'
+                        site:               'https://oauth.intuit.com',
+                        request_token_path: '/oauth/v1/get_request_token',
+                        authorize_url:      'https://appcenter.intuit.com/Connect/Begin',
+                        access_token_path:  '/oauth/v1/get_access_token'
   end
 
   let(:op_consumer) do
     OAuth::Consumer.new consumer_key, consumer_secret,
-      site:               'https://sandbox.api.intuit.com',
-      request_token_path: '/oauth/v1/get_request_token',
-      authorize_url:      'https://appcenter.intuit.com/Connect/Begin',
-      access_token_path:  '/oauth/v1/get_access_token'
+                        site:               'https://sandbox.api.intuit.com',
+                        request_token_path: '/oauth/v1/get_request_token',
+                        authorize_url:      'https://appcenter.intuit.com/Connect/Begin',
+                        access_token_path:  '/oauth/v1/get_access_token'
   end
 
   # you can run this if you want, if you have credentials
