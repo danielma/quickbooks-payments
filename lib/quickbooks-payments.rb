@@ -14,6 +14,11 @@ module Quickbooks
   module Payments
     class << self
       attr_accessor :access_token
+      attr_writer :sandbox_mode
+
+      def sandbox_mode
+        @sandbox_mode || false
+      end
     end
   end
 end
