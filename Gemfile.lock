@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    quickbooks-payments (0.0.6)
+    quickbooks-payments (0.0.7)
       oauth (~> 0.4)
 
 GEM
@@ -90,13 +90,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  awesome_print
+  awesome_print (~> 1)
   bundler (~> 1.8)
-  guard-rspec
+  guard-rspec (~> 4)
   quickbooks-payments!
   rake (~> 10.0)
   rspec (~> 3)
-  rspec-its
-  rubocop
-  terminal-notifier
-  webmock
+  rspec-its (~> 1)
+  rubocop (~> 0.33)
+  terminal-notifier (~> 1)
+  webmock (~> 1)
