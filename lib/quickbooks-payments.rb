@@ -1,4 +1,6 @@
 require 'oauth'
+require 'json'
+require 'time'
 
 module Quickbooks; end
 
