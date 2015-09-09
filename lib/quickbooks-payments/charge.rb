@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module Quickbooks
   module Payments
     # Represents a charge
@@ -6,7 +8,8 @@ module Quickbooks
     class Charge < BasicModel
       @root_url = '/quickbooks/v4/payments/charges'
 
-      attr_accessor :status, :amount, :currency, :token, :id, :auth_code
+      attr_accessor :status, :amount, :currency, :token, :id, :auth_code,
+                    :request_id
       attr_reader :created_at
 
       alias_method :authCode=, :auth_code=
@@ -25,9 +28,16 @@ module Quickbooks
         def create(options = {})
           options = validate_options options
 
-          response = Quickbooks::Payments::Request.post @root_url, options
+          request_id = SecureRandom.uuid
 
-          new response
+          response = Quickbooks::Payments::Request.post(
+            @root_url,
+            options,
+            'Request-Id' => request_id)
+
+          ap response
+
+          new response.merge request_id: request_id
         end
 
         private
