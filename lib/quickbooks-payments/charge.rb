@@ -70,15 +70,6 @@ module Quickbooks
         end
       end
 
-      def initialize(json = {})
-        super
-
-        json.each do |key, value|
-          setter = "#{key}="
-          send(setter, value) if respond_to?(setter)
-        end
-      end
-
       # Setters
 
       def created_at=(string_or_time)
@@ -90,14 +81,6 @@ module Quickbooks
       end
 
       alias_method :created=, :created_at=
-
-      # Getters
-
-      def to_json
-        instance_variables.each_with_object({}) do |variable, sum|
-          sum[variable[1..-1]] = instance_variable_get variable
-        end.to_json
-      end
     end
   end
 end

@@ -100,19 +100,4 @@ RSpec.describe Quickbooks::Payments::Charge do
       end
     end
   end
-
-  describe 'instance methods' do
-    let(:charge) { described_class.new valid_attributes }
-    let(:args) { [] }
-
-    subject(:run) { charge.send method, *args }
-
-    describe 'to_json' do
-      let(:method) { 'to_json' }
-
-      it { is_expected.to include '"status"' }
-      it { is_expected.to_not include '"@status"' }
-      it { is_expected.to include valid_attributes[:status] }
-    end
-  end
 end
