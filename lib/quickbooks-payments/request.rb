@@ -17,6 +17,18 @@ module Quickbooks
 
         private
 
+        def root
+          if Quickbooks::Payments.sandbox_mode
+            'https://sandbox.api.intuit.com'
+          else
+            'https://api.intuit.com'
+          end
+        end
+
+        def get_url(relative_url = '')
+          "#{root}#{relative_url}"
+        end
+
         def ensure_access_token(method)
           @access_token = Quickbooks::Payments.access_token
 
@@ -26,14 +38,16 @@ module Quickbooks
         def request(method, endpoint, headers = {})
           ensure_access_token method
 
-          parse_json @access_token.public_send(method, endpoint,
+          parse_json @access_token.public_send(method, get_url(endpoint),
                                                default_headers.merge(headers))
         end
 
         def request_with_body(method, endpoint, body = '', headers = {})
           ensure_access_token method
 
-          parse_json @access_token.public_send(method, endpoint, body,
+          body = body.to_json unless body.respond_to?(:to_str)
+
+          parse_json @access_token.public_send(method, get_url(endpoint), body,
                                                default_headers.merge(headers))
         end
 
