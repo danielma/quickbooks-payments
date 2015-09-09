@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Daniel Ma']
   spec.email         = ['drailskid@yahoo.com']
 
-  spec.summary       = 'Ruby API for Quickbooks payments'
-  spec.description   = 'Ruby API for Quickbooks payments'
+  spec.summary       = 'Quickbooks Payments for Ruby'
+  spec.description   = 'Ruby Gem to use the Quickbooks Payments REST API'
   spec.homepage      = 'https://github.com/danielma/quickbooks-payments'
   spec.license       = 'MIT'
 
