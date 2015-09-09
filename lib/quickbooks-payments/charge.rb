@@ -90,6 +90,14 @@ module Quickbooks
       end
 
       alias_method :created=, :created_at=
+
+      # Getters
+
+      def to_json
+        instance_variables.each_with_object({}) do |variable, sum|
+          sum[variable[1..-1]] = instance_variable_get variable
+        end.to_json
+      end
     end
   end
 end
