@@ -29,7 +29,8 @@ RSpec.describe Quickbooks::Payments::Charge do
         let(:created) { '2014-11-03T16:41:42Z' }
 
         before do
-          allow(access_token).to receive(:post).and_return(
+          resp = instance_double Net::HTTPOK
+          allow(resp).to receive(:body).and_return({
             created: created,
             status: 'CAPTURED',
             amount: '10.55',
@@ -38,7 +39,8 @@ RSpec.describe Quickbooks::Payments::Charge do
             id: 'EMU254189574',
             authCode: '792668',
             capture: true
-          )
+          }.to_json)
+          allow(access_token).to receive(:post).and_return(resp)
         end
 
         its(:created_at) { is_expected.to eq Time.parse(created) }

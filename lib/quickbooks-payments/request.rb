@@ -26,15 +26,21 @@ module Quickbooks
         def request(method, endpoint, headers = {})
           ensure_access_token method
 
-          @access_token.public_send method, endpoint,
-                                    default_headers.merge(headers)
+          parse_json @access_token.public_send(method, endpoint,
+                                               default_headers.merge(headers))
         end
 
         def request_with_body(method, endpoint, body = '', headers = {})
           ensure_access_token method
 
-          @access_token.public_send method, endpoint, body,
-                                    default_headers.merge(headers)
+          parse_json @access_token.public_send(method, endpoint, body,
+                                               default_headers.merge(headers))
+        end
+
+        def parse_json(response)
+          JSON.parse response.body
+        rescue
+          { error: 'JSON_UNPARSEABLE', body: response.body, response: response }
         end
 
         def default_headers
