@@ -4,7 +4,7 @@ RSpec.describe Quickbooks::Payments::Request do
   include_context 'setup access_token'
 
   describe 'class methods' do
-    let(:args)  { ['/path'] }
+    let(:args) { ['/path'] }
     let(:default_headers) { described_class.send :default_headers }
 
     def get_url(path)
@@ -17,7 +17,8 @@ RSpec.describe Quickbooks::Payments::Request do
 
         it 'fails without access_token' do
           Quickbooks::Payments.access_token = nil
-          expect { call }.to raise_error(Quickbooks::Payments::NoAccessTokenError)
+          expect { call }
+            .to raise_error(Quickbooks::Payments::NoAccessTokenError)
         end
 
         it 'sends args to access_token' do
@@ -35,7 +36,8 @@ RSpec.describe Quickbooks::Payments::Request do
 
         it 'fails without access_token' do
           Quickbooks::Payments.access_token = nil
-          expect { call }.to raise_error(Quickbooks::Payments::NoAccessTokenError)
+          expect { call }
+            .to raise_error(Quickbooks::Payments::NoAccessTokenError)
         end
 
         it 'sends args to access_token' do

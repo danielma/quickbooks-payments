@@ -17,6 +17,9 @@ RSpec.describe Quickbooks::Payments::Charge do
   end
 
   describe 'class methods' do
+    let(:args) { [] }
+    subject(:run) { described_class.send method, *args }
+
     describe '.create' do
       let(:default_options) do
         {
@@ -26,18 +29,19 @@ RSpec.describe Quickbooks::Payments::Charge do
         }
       end
       let(:options) { {} }
+      let(:args) { [default_options.merge(options)] }
 
-      subject(:call) { described_class.create default_options.merge(options) }
+      let(:method) { 'create' }
 
       it 'returns a charge object' do
-        expect(call).to be_a described_class
+        expect(run).to be_a described_class
       end
 
       it 'makes a request' do
         expect(Quickbooks::Payments::Request).to receive(:post)
           .with(anything, anything, hash_including('Request-Id'))
           .and_return({})
-        call
+        run
       end
 
       describe 'attributes' do
@@ -64,7 +68,7 @@ RSpec.describe Quickbooks::Payments::Charge do
           let(:options) { { token: nil } }
 
           it 'is required' do
-            expect { call }.to raise_error Quickbooks::Payments::NoTokenError
+            expect { run }.to raise_error Quickbooks::Payments::NoTokenError
           end
         end
 
@@ -72,7 +76,7 @@ RSpec.describe Quickbooks::Payments::Charge do
           let(:options) { { amount: nil } }
 
           it 'is required' do
-            expect { call }.to raise_error Quickbooks::Payments::NoAmountError
+            expect { run }.to raise_error Quickbooks::Payments::NoAmountError
           end
         end
 
@@ -80,7 +84,7 @@ RSpec.describe Quickbooks::Payments::Charge do
           let(:options) { { currency: nil } }
 
           it 'is required' do
-            expect { call }.to raise_error Quickbooks::Payments::NoCurrencyError
+            expect { run }.to raise_error Quickbooks::Payments::NoCurrencyError
           end
         end
       end
@@ -97,6 +101,20 @@ RSpec.describe Quickbooks::Payments::Charge do
               .create default_options.merge(__not_an_option__: 'yeah!')
           end.to raise_error(ArgumentError)
         end
+      end
+    end
+
+    describe '.validate_options' do
+      let(:method) { 'validate_options' }
+      let(:args) { [{ 'string_option' => 'string' }] }
+
+      it 'stringifies keys' do
+        expect(described_class).to receive(:ensure_required_options)
+          .with(hash_including(:string_option))
+        expect(described_class).to receive(:verify_allowed_options)
+          .and_return({})
+
+        run
       end
     end
   end
