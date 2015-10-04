@@ -160,6 +160,12 @@ RSpec.describe Quickbooks::Payments::Charge do
       it 'responds correctly to error' do
         expect(subject).to eq true
       end
+
+      describe 'errors is empty' do
+        let(:attributes) { {} }
+
+        it { is_expected.to eq false }
+      end
     end
   end
 end
