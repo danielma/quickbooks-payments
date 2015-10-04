@@ -9,7 +9,7 @@ module Quickbooks
       @root_url = '/quickbooks/v4/payments/charges'
 
       attr_accessor :status, :amount, :currency, :token, :id, :auth_code,
-                    :request_id
+                    :request_id, :errors
       attr_reader :created_at
 
       alias_method :authCode=, :auth_code=

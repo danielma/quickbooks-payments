@@ -16,6 +16,18 @@ RSpec.describe Quickbooks::Payments::Charge do
     }
   end
 
+  describe 'attributes' do
+    subject { described_class.new }
+
+    def self.respond_to(attribute)
+      it { is_expected.to respond_to attribute }
+    end
+
+    %w(status amount currency token id auth_code request_id errors).each do |a|
+      respond_to a
+    end
+  end
+
   describe 'class methods' do
     let(:args) { [] }
     subject(:run) { described_class.send method, *args }
