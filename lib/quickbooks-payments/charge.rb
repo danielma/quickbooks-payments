@@ -81,6 +81,12 @@ module Quickbooks
       end
 
       alias_method :created=, :created_at=
+
+      # Getters
+
+      def error?
+        errors.any?
+      end
     end
   end
 end
