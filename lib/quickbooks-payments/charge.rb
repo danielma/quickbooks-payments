@@ -85,7 +85,7 @@ module Quickbooks
       # Getters
 
       def error?
-        errors.any?
+        !!(errors && errors.any?)
       end
     end
   end
