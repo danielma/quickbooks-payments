@@ -12,8 +12,27 @@ RSpec.describe Quickbooks::Payments::Charge do
       token: 'bFy3h7W3D2tmOfYxl2msnLbUirY=',
       id: 'EMU254189574',
       authCode: '792668',
-      capture: true
+      capture: true,
+      errors: [{
+        code: 'PMT-4000',
+        detail: 'cardNumber',
+        infoLink: 'info',
+        message: 'cardNumber is invalid',
+        type: 'invalid_request'
+      }]
     }
+  end
+
+  describe 'attributes' do
+    subject { described_class.new }
+
+    def self.respond_to(attribute)
+      it { is_expected.to respond_to attribute }
+    end
+
+    %w(status amount currency token id auth_code request_id errors).each do |a|
+      respond_to a
+    end
   end
 
   describe 'class methods' do
@@ -61,6 +80,14 @@ RSpec.describe Quickbooks::Payments::Charge do
         its(:id) { 'EMU254189574' }
         its(:auth_code) { is_expected.to eq '792668' }
         its(:json) { is_expected.to have_key 'created' }
+
+        describe 'errors' do
+          it 'has errors' do
+            errors = subject.errors
+
+            expect(errors.length).to eq 1
+          end
+        end
       end
 
       describe 'requires' do
@@ -115,6 +142,23 @@ RSpec.describe Quickbooks::Payments::Charge do
           .and_return({})
 
         run
+      end
+    end
+  end
+
+  describe 'instance methods' do
+    let(:charge) { described_class.new attributes }
+    let(:attributes) { {} }
+
+    subject(:run) { charge.send method, *args }
+    let(:args) { [] }
+
+    describe 'error?' do
+      let(:method) { :error? }
+      let(:attributes) { { errors: [{ code: 1 }] } }
+
+      it 'responds correctly to error' do
+        expect(subject).to eq true
       end
     end
   end
