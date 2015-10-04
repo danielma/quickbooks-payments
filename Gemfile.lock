@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    quickbooks-payments (0.0.8)
+    quickbooks-payments (0.0.9)
       oauth (~> 0.4)
 
 GEM
